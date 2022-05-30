@@ -1,0 +1,183 @@
+---
+title: "homework 5"
+author: "Enbo Tian"
+date: "2020/11/17"
+output: pdf_document
+---
+
+## Problem 1
+\begin{enumerate}
+\item[(i)]
+$\frac{\phi_1(\phi_2-1)}{4*\phi_2}=0.72<1 $
+$f_Y(\lambda) = \frac{\sigma^2}{2\pi}\frac{|\theta(e^{-i\lambda})|^2}{|\phi(e^{-i\lambda})|^2} \\=\frac{6}{2\pi}\frac{|1+0.7e^{-i\lambda}|^2}{|1-1.2e^{-i\lambda}+0.7e^{-2i\lambda}|^2} $
+\end{enumerate}
+```{r}
+library(TSA)
+sd= ARMAspec(model=list(ar=c(1.2,-0.7),ma=-0.7), main="ARMA(2,1)")
+for(i in 1:500){
+  if(sd$spec[i+1,] >sd$spec[i,] ){
+    maxfreq <- sd$freq[i]
+  }
+}
+
+abline(v = maxfreq, col = "red")
+maxfreq
+```
+
+## Problem 2
+\begin{enumerate}
+\item[(a)]
+
+$ (1-\phi B)Z_t = a_t$
+
+Then $Y_t = \frac{1}{1-\phi B}a_t+e_t $
+
+Then $(1-\phi B)Y_t = a_t+(1-\phi B)e_t$
+
+Since $ a_t$ is White Noise, and $(1-\phi B)e_t$ is MA(1), 
+then $ a_t+(1-\phi B)e_t$ is MA(1).
+
+Thus, {$Y_t$} is a ARMA{1,1} model.
+
+
+\item[(b)]
+
+let $\tilde{Z_t} = a_t $ and $\tilde{W_t} =(1-\phi B)e_t $
+
+then $ f_Y(\lambda)= f_{\tilde{Z_t}}(\lambda) + f_{\tilde{W_t}}(\lambda) $
+
+then $ \frac{\sigma^2}{2\pi}\frac{1-2\theta cos(\lambda)+\theta^2}{1-2\phi cos(\lambda)+\phi^2} =\frac{\sigma^2_a}{2\pi}+ \frac{\sigma^2_e}{2\pi}(1-2\phi cos(\lambda)+\phi^2)$
+
+$ \sigma^2(1-2\theta cos(\lambda)+\theta^2) = \sigma^2_a(1-2\phi cos(\lambda)+\phi^2) +\sigma^2_e(1-2\phi cos(\lambda)+\phi^2)^2 $
+
+\item[(c)]
+
+$ f_Y(\lambda)=\frac{\sigma^2_a}{2\pi}+ \frac{\sigma^2_e}{2\pi}(1-2\phi cos(\lambda)+\phi^2) $
+
+\end{enumerate}
+## Problem 3
+\begin{enumerate}
+\item[]
+$f_X(\lambda) = \frac{1}{2\pi}|1-0.99e^{-3i\lambda}|^2 $
+\end{enumerate}
+```{r}
+ARMAspec(model=list(ar=c(0,0,0.99)), main="AR(3)")
+```
+\begin{enumerate}
+\item[]
+The sample paths of {$X_t$} will exhibit oscillatory behavior,
+since there's crest at frequency 0, and about 0.33.
+
+The approximate period of the oscillation is 0.33.
+
+Since $ (1-0.99B^3)X_t = e_t $, $X_t= 1/(1-0.99B^3)e_t $ 
+
+$Y_t = 1/3(1+B+1/B)X_t =1/3\frac{1+B+1/B}{1-0.99B^3}e_t  $
+
+then $(1-0.99B^3)Y_t = 1/3(1+B+1/B)e_t $
+
+$f_Y(\lambda)  = \frac{1}{2\pi}\frac{|1/3+e^{-i\lambda}/3+e^{i\lambda}/3|^2}{|1-0.99e^{-3i\lambda}|^2} $
+
+$ f_X(2\pi/3) = \frac{1}{2\pi}|1-0.99e^{-2\pi i}|^2 = 1.59*10^{-5}$
+
+$f_Y(2\pi/3)  = \frac{1}{2\pi}\frac{|1/3+e^{-2\pi i/3}/3+e^{2\pi i/3}/3|^2}{|1-0.99e^{-2\pi i}|^2} = 1591.54$
+
+The oscillations of $\{X_t\}$ gets lower.
+
+\end{enumerate}
+
+## Problem 4
+\begin{enumerate}
+\item[(a)]
+
+$$\begin{cases}
+\gamma(0) = \phi_1\gamma(1) + \phi_2\gamma(2)+\sigma^2(1-\theta\psi_1)\\
+\gamma(1) = \phi_1\gamma(0) + \phi_2\gamma(1)-\sigma^2\theta\\
+\rho(2) = \phi_1\rho(1)+\phi_2\rho(0)\\
+\rho(3) = \phi_1\rho(2)+\phi_2\rho(1)\end{cases}
+$$
+then 
+$$
+\begin{cases}
+-0.0106 = \phi_1*0.4894+\phi_2
+\\ -0.2341 = \phi_1*(-0.0106)+\phi_2*0.4894\end{cases}
+$$
+
+$ \phi_1 = 0.915$, and $ \phi_2 = 0.458$.
+
+Since $ \tilde{\gamma}(1) = \tilde{\gamma}(0)\tilde{\rho}(1) = 2.74$
+
+$ \tilde{\gamma}(2) = \tilde{\gamma}(0)\tilde{\rho}(2) = -0.059$
+
+$ \psi_1 = \phi_1-\theta $,
+
+$$
+\begin{cases}
+5.6 = 0.915 *2.74 + 0.458*(-0.059)+\sigma^2(1-\theta(0.915-\theta))\\ 
+2.74 = 0.915 *5.6+0.458* 2.74-\sigma^2\theta \end{cases}
+$$
+$\theta = 0.27 \pm0.96i $ and $\sigma^2 = 2.44\pm0.66i $
+
+\item[(b)]
+$\rho(4) = \phi_1\rho(3)+\phi_2\rho(2) = 0.915*-0.2341 +0.458 *-0.0106 = -0.219$
+$\rho(5) =\phi_1\rho(4)+\phi_2\rho(3) = 0.915* -0.219+0.458 *-0.2341 =-0.3076$
+$\rho(6) =\phi_1\rho(5)+\phi_2\rho(4) = 0.915*-0.3076 +0.458 *-0.219 =-0.381$
+\end{enumerate}
+## Problem 5
+\begin{enumerate}
+\item[(a)]
+\end{enumerate}
+```{r}
+dat<-read.csv("m-decile1510.txt",sep = "",skip = 2)
+datats <- ts(dat$D5, start=c(1960,1), freq = 12)
+plot(datats, ylab=' Decile 5') #ts plot
+summary(datats) #summary
+acf(datats) # acf plot
+pacf(datats)# pacf plot
+eacf(datats, ar.max = 10, ma.max = 10) #eacf ARMA(2,1)
+```
+
+\begin{enumerate}
+\item[(b)]
+\end{enumerate}
+```{r}
+Box.test(dat$D1, lag = 12, type = "Ljung-Box", fitdf=1)
+Box.test(dat$D5, lag = 12, type = "Ljung-Box", fitdf=1)
+Box.test(dat$D10, lag = 12, type = "Ljung-Box", fitdf=1)
+```
+\begin{enumerate}
+\item[(c)]
+\end{enumerate}
+```{r}
+est1<-arima(dat$D5, order=c(0,0,1), include.mean = T)
+est1
+
+source("r-backtest.txt")
+backtest(est1,datats,100,3)
+
+pred.dat <- predict(est1, n.ahead=3); pred.dat
+
+source("foreplot.R")
+foreplot(pred.dat, datats, orig=528,start=1,p=0.95)
+```
+
+\begin{enumerate}
+\item[(d)]
+\end{enumerate}
+```{r}
+est2<- arima(dat$D5, order=c(2,0,0), include.mean = T)
+est2
+
+source("r-backtest.txt")
+backtest(est2,datats,100,3)
+
+pred.dat <- predict(est2, n.ahead=3); pred.dat
+
+source("foreplot.R")
+foreplot(pred.dat, datats, orig=528,start=1,p=0.95)
+```
+
+\begin{enumerate}
+\item[(e)]
+MA model, for MA model have same value on the 2 and 3 step.
+\end{enumerate}

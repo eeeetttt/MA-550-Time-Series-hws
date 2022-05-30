@@ -1,0 +1,196 @@
+---
+title: "homework 4"
+author: "Enbo Tian"
+date: "2020/11/3"
+output: pdf_document
+---
+
+## Problem 1
+\begin{enumerate}
+\item[(a)]
+when $ 1-1.2z+0.7z^2=0$, $|z|=3.16$
+
+Since $ \phi(z) =1-1.2z+0.7z^2\ne0$ and $\theta(z) =1+0.7z\ne0 $,
+for $|z| \le 1$ it is causal and invertible, and this is a ARMA(2,1)model.
+
+\item[(b)]
+$ \psi_1 = \phi_1-\theta_1 = 1.2+0.7= 1.9 $
+
+$ \psi_2 = \phi_1 \psi_1+\phi_2 \psi_0 = 1.2*1.9-0.7=1.58 $
+
+$ \psi_3 =\phi_1 \psi_2+ \phi_2 \psi_1 = 1.2*1.58-0.7*1.9=0.566$
+
+$ \psi_4 =\phi_1 \psi_3+ \phi_2 \psi_2 +\phi_3 \psi_1 -\theta_4 = 1.2*0.566-0.7*1.58 =-0.4268$
+
+\item[(c)]
+
+$\pi_1 = \theta_1\pi_0+\phi_1 =-0.7*1+1.2= 0.5 $
+
+$\pi_2 = \theta_1\pi_1+\phi_2 =-0.7*0.5-0.7 =-1.05 $
+
+$\pi_3 = \theta_1\pi_2 = -0.7*-1.05 =0.735$
+
+$\pi_4 = \theta_1\pi_3=-0.7*0.735 =0.5145$
+
+\item[(d)]
+
+$\rho(k)=\phi_1\rho(k-1)+\phi_2\rho(k-2) $ for $k>1 $
+
+\item[(e)]
+$$
+\begin{cases}
+ \gamma(0) = \phi_1\gamma(1)+\phi_2\gamma(2)+\sigma^2(1-\theta_1\psi_1)\\
+ \gamma(1) = \phi_1\gamma(0)+\phi_2\gamma(1)-\sigma^2(\theta_1\psi_0)\\
+ \gamma(2) = \phi_1\gamma(1)+\phi_2\gamma(0)\end{cases}
+$$
+then
+
+$$
+\begin{cases}
+\gamma(0) = 1.2\gamma(1)-0.7\gamma(2)+6*(1+0.7*1.9)\\
+\gamma(1) = 1.2\gamma(0)-0.7\gamma(1)-6*(-0.7)\\
+ \gamma(2) = 1.2\gamma(1)-0.7\gamma(0)
+\end{cases}
+$$
+
+$$
+  \begin{cases}
+  \gamma(0)=58.11\\
+  \gamma(1)=43.63\\
+  \gamma(2)=11.67
+  \end{cases}
+$$
+$ \rho(1) =\frac{\gamma(1)}{\gamma(0)}=0.495$
+
+$ \rho(2)=\frac{\gamma(2)}{\gamma(0)}=-0.104$
+
+$\rho(3)= \phi_1\rho(2)+\phi_2\rho(1) =-0.473 $
+
+\item[(f)]
+$\phi_{11}=\rho(1) = 0.49$
+
+$$
+ \begin{bmatrix}
+   1 & \rho(1) \\
+   \rho(1) & 1\end{bmatrix} \begin{bmatrix}
+   \phi_{12} \\
+   \phi_{22} \end{bmatrix} =\begin{bmatrix}
+   \rho(1) \\
+   \rho(2) \end{bmatrix}
+$$
+
+then $\phi_{22} =-0.46 $
+$$
+ \begin{bmatrix}
+   1 & \rho(1)&\rho(2) \\
+   \rho(1) & 1&\rho(1) \\
+   \rho(2) & \rho(1)& 1\end{bmatrix} \begin{bmatrix}
+   \phi_{13} \\
+   \phi_{23} \\
+   \phi_{33}\end{bmatrix} =\begin{bmatrix}
+   \rho(1) \\
+   \rho(2) \\
+   \rho(3)\end{bmatrix}
+$$
+
+then$\phi_{33} =-0.28$
+\item[(g)]
+\end{enumerate}
+```{r}
+ARMAacf(ar=c(1.2,-0.7),ma=-0.7, lag.max=5)
+ARMAacf(ar=c(1.2,-0.7),ma=-0.7, lag.max=5,pacf = TRUE)
+
+```
+\begin{enumerate}
+\item[(h)]
+
+$m^2 + 1.2m -0.7 =0 $ then $ m1 =0.42$, $m2=-1.62$
+
+$ \hat{Y}_t(l) = c_1^{(t)}0.42^l -1.62^lc_2^{(t)}$
+
+$ \hat{Y}_t(1) = -1.2Y_t+0.7Y{t-1}-0.7\epsilon_t=0.42c_1-1.62c_2$
+
+$ \hat{Y}_t(2) = 1.44Y_t-0.84Y{t-1}+0.84\epsilon_t+0.7Y_t=0.42c_1-1.62c_2$
+
+Then $c_1=22.9Y_t+0.343Y{t-1}-0.343\epsilon_t $, $c_2=0.66Y_t+0.3416Y{t-1}-0.3416\epsilon_t $
+
+Then $ \hat{Y}_t(l) = (22.9Y_t+0.343Y{t-1}-0.343\epsilon_t)*0.42^l+ (0.66Y_t+0.3416Y{t-1}-0.3416\epsilon_t)-1.62^l$
+\end{enumerate}
+## Problem 2
+\begin{enumerate}
+\item[]
+let $ \psi(z) = \sum_{i=-\infty}^\infty{\psi_iz^i} $, and $ \psi(-z) = \sum_{j=-\infty}^\infty{\psi_jz^{-j}} $
+
+let i = j+k
+
+then$ \psi(z) \psi(-z) = \sum_{j+k=-\infty}^\infty{\psi_{j+k}z^{j+k}}\sum_{j=-\infty}^\infty{\psi_jz^{-j}} \\=\sum_{k=-\infty}^\infty\sum_{j=-\infty}^\infty{\psi_k\psi_jz^k}$
+\end{enumerate}
+## Problem 3
+\begin{enumerate}
+\item[]
+$\epsilon_t^* = \frac{1-0.5B}{1-0.8B}Y_t $
+
+$ \widetilde{\sigma}^2 = G(z) = \sigma^2\frac{\theta(z)\theta(z^{-1})}{\phi(z)\phi(z^{-1})} \\=\sigma^2\frac{(1-1.25z)(1-1.25z^{-1})(1-0.5z)(1-0.5z^{-1})}{(1-2z)(1-2z^{-1})(1-0.8z)(1-0.8z^{-1})} \\=0.39\sigma^2 $ is a constant,
+
+Then the equation is causal and invertible.
+\end{enumerate}
+## Problem 4
+\begin{enumerate}
+\item[]
+Since $ <\hat{Y}_{1-h}-Y_{1-h},Yk> = E[(\hat{Y}_{1-h}-Y_{1-h})Y_k] = 0 $
+
+Then $ E(\hat{Y}_{1-h}Y_k) = E(Y_{1-h}Y_k)$ for k = 1,2,3...
+
+Which means $\hat{Y}_{1-h}= \beta_{t,1}Y_1+...+\beta_{t,t}Y_t $ for$\beta_t= (\beta_{t,1},...,\beta_{t,t})' $ satisfies $ \Gamma_t\beta_t=\gamma_t^{(h)} $
+
+
+\end{enumerate}
+## Problem 5
+\begin{enumerate}
+\item[]
+
+$Y_t = e_1cos(t)+e_2sin(t)$, $e_1$,$e_2$are independent
+
+\item[(a)]
+
+$Y_3 = e_1cos(3)+e_2sin(3) $
+
+$Y_2 = e_1cos(2)+e_2sin(2) $
+
+$Y_1 = e_1cos(1)+e_2sin(1) $
+
+then $ cos(3) = \beta_1cos(2)+\beta_2cos(1) $
+
+$ cos(3) = \beta_1cos(2)+\beta_2cos(1) $
+
+then $\beta_1 = 1.08, \beta_2=-1 $
+
+\item[(b)]
+
+$E(Y_3-\hat{Y}_2(1))^2 = E(Y_3-1.08Y_2+Y_1)^2 \\=(0.299e_1+0.00054e_2)^2\\=0.089e_1^2+3.02*10^{-7}e_2$
+\end{enumerate}
+## Problem 6
+\begin{enumerate}
+\item[(a)]
+$\phi_1 = 1.2 $, $ \phi_2 =-0.7$
+
+$\hat{Y}_T(1) = \phi_1Y_T+\phi_2Y_{T-1} +\mu = 1.2 *14.4+13.9*-0.7 +5=12.55$
+
+$\hat{Y}_T(2) = \phi_1\hat{Y}_T(1)+\phi_2Y_T +\mu= 1.2 *12.55+14.4*-0.7+5=9.98 $
+
+$\hat{Y}_T(3) = \phi_1\hat{Y}_T(2)+\phi_1\hat{Y}_T(1)+\mu = 1.2 *9.98-0.7*12.55+5=8.191 $
+
+$\hat{Y}_T(4) = \phi_1\hat{Y}_T(3)+\phi_1\hat{Y}_T(2)+\mu = 1.2 *8.191-0.7*9.98+5= 9.0432$
+
+\item[(a)]
+
+$m^2 + 1.2m -0.7 =0 $ then $ m1 =0.42$, $m2=-1.62$
+
+$ \hat{Y}_t(l) = c_1^{(t)}0.42^l-1.62^lc_2^{(t)}$
+
+$0.42c_1^{(t)}-1.62c_2^{(t)}=12.55 $, and $ 0.1764c_1^{(t)}+2.62c_2^{(t)}=9.98$
+
+$ c_1^{(t)} =35.38,c_2^{(t)}=1.42$
+
+$ \hat{Y}_t(l) = 35.38*0.42^l-1.62^l*1.42$
+\end{enumerate}

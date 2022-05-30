@@ -1,0 +1,48 @@
+---
+title: "problem 4"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+## Problem 4  
+The file `MortBond.txt' contains monthly effective interest rate $z_t$  for conventional single- family mortgages from Jan. 1973 to Dec. 2003. 
+```{r}
+Mort = read.csv("MortBond.txt",head = T, sep="");
+mortrate = ts(Mort[,2],start = 1937,freq =12);
+
+```
+
+\begin{enumerate}
+
+	\item[(a)] Draw threes plots: time plot of the time series, scatter plots of $z_{t+1}$ versus $z_t$ and of $z_{t+2}$ versus $z_t$.
+\end{enumerate}	
+```{r}
+##-- second column is monthly interest rate for conventional single-family mortgage.
+Mort = read.csv("MortBond.txt",head = T, sep="");
+mortrate = ts(Mort[,2],start = 1937,freq =12);
+ts.plot(mortrate,gpars = list(xlab = "Month", ylab = "mortrate"),main = "time series")
+z01 = tail(mortrate,-1)
+z02 = tail(mortrate,-2)
+z1 = head(mortrate,-1)
+z2 = head(mortrate,-2)
+plot(z1, z01, xlab = "z_t+1", ylab = "z_t")
+plot(z2, z02, xlab = "z_t+2", ylab = "z_t")
+```
+\begin{enumerate}
+\item[(b)] Based on the plots in (a), do you think that the series is autocorrelated? Comment on whether you think the time series is stationary.
+	
+	Since the scatter plot is linear, the series is autocorrelated
+	
+	Since the trend of the time series has a crest beyond 1980, it is not stationary.
+	
+	\item[(c)] Plot the sample autocorrelation for this series up to lag 40.  Relate this plot to the plots in (a).
+	
+\end{enumerate}
+ 

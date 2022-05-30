@@ -1,0 +1,302 @@
+---
+title: "MA550_HW1"
+author: "Enbo Tian"
+output: pdf_document
+---
+
+\begin{center}
+{\Large {\bf MA 550 -- Homework 1} }\\
+Due Wed, 11:30am, September 16, 2020
+\end{center}
+
+## Problem 1
+Consider Slides \#1, Page 28. 
+\begin{enumerate}
+\item[(a)] Find the covariance matrices $Cov(\pmb{e}, \pmb{Y})$ and $Cov(\pmb{e}, \hat{\pmb{Y}})$. 
+
+$Cov(\pmb{e}, \pmb{Y}) = Cov(\pmb{Y}-\hat{\pmb{Y}}, \pmb{Y}) = Cov(\pmb{Y}, \pmb{Y}) - Cov(\hat{\pmb{Y}}, \pmb{Y}) = Var(\pmb{Y}) - Cov(\pmb{H}\pmb{Y},\pmb{Y}) = Var(\pmb{Y}) - \pmb{H}Cov(\pmb{Y},\pmb{Y}) = Var(\pmb{Y}) - \pmb{H}Var(\pmb{Y}) = (\pmb{I}-\pmb{H})Var(\pmb{Y})$
+
+$Cov(\pmb{e}, \hat{\pmb{Y}}) = Cov(\pmb{Y}-\hat{\pmb{Y}},\hat{\pmb{Y}}) = Cov(\pmb{Y}, \hat{\pmb{Y}}) - Cov(\hat{\pmb{Y}}, \hat{\pmb{Y}}) = \pmb{H}Var(\pmb{Y}) - Var(\pmb{H}\pmb{Y}) = \pmb{H}Var(\pmb{Y}) - \pmb{H}^2Var(\pmb{Y}) = (\pmb{H}-\pmb{H}^2)Var(\pmb{Y}) = \pmb{H}(\pmb{I}-\pmb{H})Var(\pmb{Y})$
+
+\item[(b)] The estimator of $\sigma^2$ is $\widehat\sigma^2 = (n-p)^{-1}\pmb{e}'\pmb{e}$. Show that $\mathrm{E}(\widehat\sigma^2) = \sigma^2$ and $\frac{\pmb{e}'\pmb{e}}{\sigma^2}$ follows a Chi-square distribution with degrees of freedom $n-p$. {\it Hint: check Rencher \& Schaalje (2008)\footnote{Rencher and Schaalje (2008): Linear Models in Statistics (2nd ed), Wiley.} Page 107 Theorem 5.2a and Page118 Corollary 2.}
+
+$\widehat\sigma^2 = (n-p)^{-1}\pmb{e}'\pmb{e} = (n-p)^{-1}\pmb{Y}'(\pmb{I}-\pmb{H})\pmb{Y} = \pmb{Y}'\frac{(\pmb{I}-\pmb{H})}{n-p}\pmb{Y}$.
+
+Let$A = \frac{\pmb{I}-\pmb{H}}{n-p}$,
+
+then $\widehat\sigma^2 =\pmb{Y}'\pmb{A}\pmb{Y} $,
+$\mathrm{E}(\widehat\sigma^2) = \mathrm{E}(\pmb{Y}'\pmb{A}\pmb{Y}) = \mu'\pmb{A}\mu + tr(\pmb{A}\Sigma)$. 
+
+As $\pmb{A}\mu = 0$ and $\Sigma = \sigma^2\pmb{I}$,
+$\pmb{Y}\sim\pmb{Np}(\mu,\sigma^2\pmb{I})$ and $\widehat\sigma^2 = \frac{\pmb{Y}'\pmb{A}\pmb{Y}}{tr(\pmb{A})} =\pmb{Y}'\pmb{A}\pmb{Y} $.
+
+So $tr(\pmb{A}) = 1$,
+$\mathrm{E}(\widehat\sigma^2) = \sigma^2tr(\pmb{A}) = \sigma^2$
+
+Since $\pmb{A} = \frac{\pmb{I}-\pmb{H}}{n-p}$, $\pmb{A}(n-p) = \pmb{I}-\pmb{H} $ is idempotent with a rank r = 1.
+
+Since $\pmb{Y}\sim \pmb{Np}(\mu,\sigma^2\pmb{I})$, $\frac{\pmb{e}'\pmb{e}}{\sigma^2} =\frac{\pmb{Y}'\pmb{A}\pmb{Y}}{\sigma^2}$ is$\chi^2(1,\frac{\mu'\pmb{A}\mu}{2\sigma^2})$ with a degree freedom $n - p$.
+
+\item[(c)] Show that  $\hat{\pmb{\beta}} = (\pmb{X}'\pmb{X})^{-1}\pmb{X}'\pmb{Y}$ and $\widehat\sigma^2$ are independent. {\it Hint: check Rencher \& Schaalje (2008) Page 119 Theorem 5.6a.}
+
+Let $\hat{\pmb{\beta}} = (\pmb{X}'\pmb{X})^{-1}\pmb{X}'\pmb{Y} =\frac{\pmb{HY}}{\pmb{X}} = \pmb{B}\pmb{Y}$, and let $\widehat\sigma^2 = \pmb{Y}'(\pmb{I}-\pmb{H})\pmb{Y} = \pmb{Y}'\pmb{A}\pmb{Y}$
+
+Since $cov(\pmb{BY},\pmb{AY}) = cov(\frac{\pmb{HY}}{\pmb{X}},(\pmb{I}-\pmb{H})\pmb{Y}) = \mathrm{E}((\frac{\pmb{HY}}{\pmb{X}})(\pmb{Y}-\pmb{HY})) - \mathrm{E}(\frac{\pmb{HY}}{\pmb{X}})\mathrm{E}(\pmb{Y}-\pmb{HY}) $
+$= \mathrm{E}(\frac{\pmb{HY}^2}{\pmb{X}}-\frac{(\pmb{HY})^2}{\pmb{X}}) - \mathrm{E}(\frac{\pmb{HY}}{\pmb{X}})\mathrm{E}(\pmb{Y}) + \mathrm{E}(\frac{\pmb{HY}}{\pmb{X}})\mathrm{E}(\pmb{HY})$
+$= \mathrm{E}(\frac{\pmb{HY}^2}{\pmb{X}}) - \mathrm{E}(\frac{(\pmb{HY})^2}{\pmb{X}}) - \mathrm{E}(\frac{\pmb{HY}^2}{\pmb{X}}) + \mathrm{E}(\frac{(\pmb{HY})^2}{\pmb{X}}) = 0$
+
+By Thm 5.6a, $\hat{\pmb{\beta}}$ and $\widehat\sigma^2$ are independent.
+\end{enumerate} 
+
+
+## Problem 2 
+Prove the following results in Slides \#1: 
+\begin{enumerate}
+\item[(a)] Page \#26: $\frac{\partial Q}{\partial\pmb{\beta}} = -2\pmb{X}'\pmb{Y}+2\pmb{X}'\pmb{X}\pmb{\beta}$; 
+
+Since $Q(\beta) = (\pmb{Y}-\pmb{X}\beta)'(\pmb{Y}-\pmb{X}\beta) = \pmb{Y}'\pmb{Y}-\pmb{Y}'\pmb{X}\beta-\pmb{Y}\pmb{X}\beta + \beta'\pmb{X}'\pmb{X}\beta$,
+
+$\frac{\partial Q}{\partial\pmb{\beta}}= 0 -\pmb{X}'\pmb{Y} - \pmb{X}'\pmb{Y} + 2\pmb{X}'\pmb{X}\beta  = -2\pmb{X}'\pmb{Y} +2\pmb{X}'\pmb{X}\beta$
+
+\item[(b)] Page \#27: $\hat\beta_0 =   \bar Y-\hat\beta_1\bar X$ and $\hat\beta_1 = \frac{\sum_{i=1}^n (X_i-\bar X)(Y_i-\bar Y)}{\sum_{i=1}^n (X_i-\bar X)^2}$;
+
+when $p =2$, $\pmb{Y}=\beta_0 + \pmb{X}\beta_1 $
+AS we set $\frac{\partial S}{\partial\beta_0}=0$, and $\frac{\partial S}{\partial\beta_1}=0$,
+
+$\Sigma_i\pmb{Y}_i = n\hat\beta_0+\hat\beta_1\Sigma_i\pmb{X}_i$ and $\Sigma_i\pmb{X}_i\pmb{Y}_i = \hat\beta_0\Sigma_i\pmb{X}_i+\hat\beta_1\Sigma_i\pmb{X}_i^2$
+
+then $\hat\beta_0 = \frac{\Sigma\pmb{X}_1^2\Sigma\pmb{Y}_i-\Sigma\pmb{X}_i\Sigma\pmb{X}_i\pmb{Y}_i}{n\Sigma\pmb{X}_i^2-(\Sigma\pmb{X}_i)^2}$
+and $\hat\beta_1 =\frac{n\Sigma\pmb{X}_i\pmb{Y}_i-\Sigma\pmb{X}_i\Sigma\pmb{Y}_i}{n\Sigma\pmb{X}_i^2-(\Sigma\pmb{X}_i)^2} = \hat\beta_1 = \frac{\sum_{i=1}^n (X_i-\bar X)(Y_i-\bar Y)}{\sum_{i=1}^n (X_i-\bar X)^2}$
+
+then $\hat\beta_0 = \bar Y-\hat\beta_1\bar X$
+
+
+\item[(c)] Page \#29: $E(\hat{\pmb{\beta}})=\pmb{\beta}$ and $Var(\hat{\pmb{\beta}}) = \sigma^2(\pmb{X}'\pmb{X})^{-1}$; 
+
+Since $\pmb{Y}_i = \beta_0+\beta_1\pmb{X}_i+e_i$ and $E[e_i]=0$
+
+We can get $E[\hat\beta_0] = \frac{\Sigma\pmb{X}_i^2\Sigma E[\pmb{Y}_i]-\Sigma\pmb{X}_i\Sigma\pmb{X}_i\Sigma E[\pmb{Y}_i]}{n\Sigma\pmb{X}_i^2-(\Sigma\pmb{X}_i)^2}=\frac{\Sigma\pmb{X}_i^2(n\beta_0+\beta_1\Sigma\pmb{X_i})-\Sigma\pmb{X}_i(\beta_0\Sigma\pmb{X}_i+\beta_1\Sigma\pmb{X}_i^2)}{n\Sigma\pmb{X}_i^2-(\Sigma\pmb{X}_i)^2}=\beta_0$
+
+Similarly $E[\hat\beta_1] = \beta_1$
+
+By the way, $E[\hat\beta] = \beta$
+
+Since $Var[\pmb{Y}_i]=\sigma^2$ and $Cov[\pmb{Y}_i,\pmb{Y}_j]=0$
+$Var[\hat\beta_0] = \frac{\sigma^2\Sigma_i\pmb{X}_i^2}{n\Sigma\pmb{X}_i^2-(\Sigma\pmb{X}_i)^2}$
+
+$ Var[\hat\beta_1] = \frac{n\sigma^2}{n\Sigma\pmb{X}_i^2-(\Sigma\pmb{X}_i)^2}$
+
+$Cov[\hat\beta_0,\hat\beta_1] = \frac{-\sigma^2\Sigma\pmb{X}_i^2}{n\Sigma\pmb{X}_i^2-(\Sigma\pmb{X}_i)^2} $
+and from (b) we can write $\hat\beta_1= \frac{\Sigma_i(x_i-\bar{x})(y_i-\bar{y})}{\Sigma_i(x_i-\bar{x})^2}= \frac{\Sigma_i(x_i-\bar{x})(y_i)}{\Sigma_i(x_i-\bar{x})^2}$
+then$ Var[\hat\beta_1]=\frac{\sigma^2}{\Sigma_i(x_i-\bar{x})^2}$
+Similarly $Var[\hat\beta] =\sigma^2(\pmb{X}'\pmb{X})^{-1}$
+
+\item[(d)] Page \#30: $\frac{\hat{\beta}_k-\beta_k}{S\{\hat{\beta}_k\}} \sim T_{n-p}$. {\it Hint: consider Problem 1 (b) and (c).}
+
+Since $\hat\beta-\beta\sim N(0,\frac{\sigma^2}{\sum_{i=1}^n(X_i-\bar{X}^2)} $
+
+then the sampling distribution is $\hat\beta_k-\beta_k\sim N(0,\sigma^2(X'X)^{-1}_{kk}) $
+Since from the varience of (C),the eatimates $S_{\hat{\beta}_k}$ is RV's
+So the hypothesis test is normally distributed. then it can be shown as 
+$\frac{\hat{\beta}_k-\beta_k}{S\{\hat{\beta}_k\}} \sim T_{n-p}$
+\end{enumerate}
+
+ 
+
+## Problem 3
+Consider the model $Y_i=\beta_0+\beta_1 X_i+\varepsilon_i$ where $\varepsilon_i\sim\mbox{ind}N(0,\sigma_i^2)$ for observations $i=1,\ldots,n$. Suppose $X_i>0$ and $\sigma_i^2=\sigma^2 X_i$. Let $\tilde{Q}(\pmb{\beta})=\sum_{i=1}^n\sigma_i^{-2}\{Y_i-(\beta_0+\beta_1 X_i)\}^2$ denote the weighted error sum of squares.
+Define
+\begin{itemize}
+\item[] $\pmb{Y}=(Y_1,\ldots,Y_n)'$: $n\times 1$ vector of response variables
+\item[] $\pmb{X}$: $n\times 2$ design matrix with 1's in the first column and $(X_1,\ldots,X_n)'$ in the second column. 
+\item[] $\pmb{\beta}=(\beta_0,\beta_1)'$: $2\times 1$ vector of regression coefficients
+\item[] $\pmb{V}=\mbox{diag}\{X_1,\ldots,X_n\}$: $n\times n$ diagonal matrix with $X_1,\ldots,X_n$ along the diagonal 
+\end{itemize}
+\begin{enumerate}
+
+\item[(a)] Derive the distribution of $\pmb{Y}$ including the analytical forms of the mean vector $\pmb{\mu}$ and variance-covariance matrix $\pmb{\Sigma}$.
+
+$ E[\pmb{Y}_i] = E(\beta_0+\beta_1\pmb{X}_i+\varepsilon_i)= E(\beta_0)+\beta_1E(\pmb{X}_i)+E(\varepsilon_i) = \beta_0 + \beta_1\frac{\sigma_i^2}{\sigma^2} $
+$$\mu = \left[
+\begin{matrix}
+\beta0+\beta1\frac{\sigma_1^2}{\sigma^2} \\
+\beta0+\beta1\frac{\sigma_2^2}{\sigma^2} \\
+\vdots \\
+\beta0+\beta1\frac{\sigma_n^2}{\sigma^2} 
+\end{matrix}
+\right]
+$$
+
+$Var(\pmb{Y}_i)  = Var(\beta_0+\beta_1\pmb{X}_i+\varepsilon_i) = \sigma_i^2 \\$
+$Cov(\pmb{Y}_i,\pmb{Y}_j) = E[(\pmb{Y}_i-E(\pmb{Y}_i))(\pmb{Y}_j-E(\pmb{Y}_j))]=E[(\beta_0+\beta_1\pmb{X}_i+\varepsilon_i-\beta_0-\beta_1\frac{\sigma_i^2}{\sigma^2})(\beta_0+\beta_1\pmb{X}_j+\varepsilon_j-\beta_0-\beta_1\frac{\sigma_j^2}{\sigma^2})] = 0\\$
+Therefore $$ Cov(\pmb{X},\pmb{Y}) = \left[
+\begin{matrix}
+\sigma_1^2 & 0 & \cdots & 0\\
+0 & \sigma_2^2 & \cdots & 0\\
+\vdots & \vdots & \ddots & \vdots\\
+0 & 0 & \cdots & \sigma_n^2
+\end{matrix}
+\right]$$
+
+\item[(b)] Write the weighted error sum of squares $\tilde{Q}(\pmb{\beta})$ in matrix terms.
+$$\tilde{Q}(\pmb{\beta}) = \sum_{i=1}^n\sigma_i^{-2}(\pmb{Y}_i-\beta_0-\beta_1\pmb{X}_i)^2 = (\frac{1}{\sigma_1}(\pmb{Y}_1-\beta_0-\beta_1\pmb{X}_1),\cdots,\frac{1}{\sigma_n}(\pmb{Y}_n-\beta_0-\beta_1\pmb{X}_n))\left(\begin{matrix}
+\frac{1}{\sigma_1}(\pmb{Y}_1-\beta_0-\beta_1\pmb{X}_1) \\
+\vdots \\
+\frac{1}{\sigma_n}(\pmb{Y}_n-\beta_0-\beta_1\pmb{X}_n)
+\end{matrix}
+\right)
+$$
+
+\item[(c)] Let $\tilde{\pmb{\beta}}=(\tilde{\beta}_0,\tilde{\beta}_1)'$ denote the weighted least squares estimates of $\pmb{\beta}$. Derive $\tilde{\pmb{\beta}}$ by minimizing $\tilde{Q}(\pmb{\beta})$.
+
+Since $\partial\tilde{Q}(\pmb{\beta}_0) =0 $ and $ \partial\tilde{Q}(\pmb{\beta}_1) =0 $, 
+
+$ \sum_{i=1}^n\sigma_i^{-2}\pmb{Y}_i = \sum_{i=1}^n\sigma_i^{-2}\beta_0+\sum_{i=1}^n\sigma_i^{-2}\beta_1$ and $\sum_{i=1}^n\pmb{Y}_i = \sum_{i=1}^n\beta_0 + \sum_{i=1}^n\beta_1\pmb{X}_i$ 
+
+then $$\left(\begin{matrix}
+\sum_{i=1}^n\sigma_i^{-2} & n\sigma_i^{-2}\\
+n & \sum_{i=1}^n\frac{\sigma_i^2}{\sigma^2}
+\end{matrix}
+\right)\left(\begin{matrix}
+\beta_0\\\beta_1
+\end{matrix}
+\right) = \left(\begin{matrix}
+\sum_{i=1}^n\sigma_i^{-2}\pmb{Y}_i\\
+\sum_{i=1}^n\pmb{Y}_i
+\end{matrix}\right)
+$$
+
+implies $$\left(\begin{matrix}
+\tilde\beta_0\\
+\tilde\beta_1
+\end{matrix}\right) = \left(\begin{matrix}
+\sum_{i=1}^n\sigma_i^{-2} & n\sigma_i^{-2}\\
+n & \sum_{i=1}^n\frac{\sigma_i^2}{\sigma^2}
+\end{matrix}
+\right)\left(\begin{matrix}
+\sum_{i=1}^n\sigma_i^{-2}\pmb{Y}_i\\
+\sum_{i=1}^n\pmb{Y}_i
+\end{matrix}\right)
+$$
+\item[(d)] Derive the mean vector and the variance-covariance matrix of $\tilde{\pmb{\beta}}$.
+
+$$E(\tilde\beta_1) = \left(\begin{matrix}
+\sum_{i=1}^n\sigma_i^{-2} & n\sigma_i^{-2}\\
+n & \sum_{i=1}^n\frac{\sigma_i^2}{\sigma^2}
+\end{matrix}\right)^{-1}
+\left(\begin{matrix}
+\sum_{i=1}^n\sigma_i^{-2}(\beta_0 + \beta_1\frac{\sigma_i^2}{\sigma^2})\\
+\sum_{i=1}^n(\beta_0 + \beta_1\frac{\sigma_i^2}{\sigma^2})
+\end{matrix}\right) = \left(\begin{matrix}
+\sum_{i=1}^n\sigma_i^{-2} & n\sigma_i^{-2}\\
+n & \sum_{i=1}^n\frac{\sigma_i^2}{\sigma^2}
+\end{matrix}\right)^{-1}\left(\begin{matrix}
+\sum_{i=1}^n\sigma_i^{-2}\beta_0 + \beta_1\sigma^{-2}\\
+\sum_{i=1}^n\beta_0 + \beta_1\frac{\sigma_i^2}{\sigma^2}
+\end{matrix}\right)
+$$
+so the Var-covaiance matrix of $$
+\tilde\beta = \left(\begin{matrix}
+Var(\tilde\beta_0)&Cov(\tilde\beta_0,\tilde\beta_1)\\
+Cov(\tilde\beta_1,\tilde\beta_0) & Var(\tilde\beta_1)
+\end{matrix}\right)
+$$
+\item[(e)] Despite the weighted variances, derive the ordinary least squares estimates of $\pmb{\beta}$ by minimizing the (unweighted) error sum of squares $Q(\pmb{\beta})=\sum_{i=1}^n\{Y_i-(\beta_0+\beta_1 X_i)\}^2$ all in matrix terms. Let $\hat{\pmb{\beta}}=(\hat\beta_0,\hat\beta_1)$ denote the (ordinary) least squares estimates of $\pmb{\beta}$.
+$ \pmb{Q}(\beta) = \varepsilon'\varepsilon = (\pmb{Y}-\pmb{X}\beta)'(\pmb{Y}-\pmb{X}\beta) = \pmb{Y}'\pmb{Y}-2\pmb{Y}'\pmb{X}\beta+\beta'\pmb{X}'\pmb{X}\beta $
+
+Since  $-\pmb{X}'\pmb{Y}+\pmb{X}'\pmb{X}\beta = 0$
+implies $\pmb{X}'\pmb{Y} = \pmb{X}'\pmb{X}\beta $
+
+then $ \hat\beta = (\pmb{X}'\pmb{X})^{-1}\pmb{X}'\pmb{Y}$
+
+\item[(f)] Derive the mean vector and the variance-covariance matrix of $\hat{\pmb{\beta}}$.
+
+$$Var-Cov(\hat\beta) = \left(\begin{matrix}
+Var(\hat\beta_0)&Cov(\hat\beta_0,\hat\beta_1)\\
+Cov(\hat\beta_1,\hat\beta_0) & Var(\hat\beta_1)
+\end{matrix}\right) = \sigma^2(\pmb{X}'\pmb{X})^{-1}
+$$
+
+\item[(g)] Draw a connection between $Var(\hat\beta_1)$ and $Var(\tilde\beta_1)$.
+\end{enumerate}
+ 
+
+
+## Problem 4  
+The file `MortBond.txt' contains monthly effective interest rate $z_t$  for conventional single- family mortgages from Jan. 1973 to Dec. 2003. 
+\begin{enumerate}
+	\item[(a)] Draw threes plots: time plot of the time series, scatter plots of $z_{t+1}$ versus $z_t$ and of $z_{t+2}$ versus $z_t$.
+\end{enumerate}	
+```{r}
+##-- second column is monthly interest rate for conventional single-family mortgage.
+Mort = read.csv("MortBond.txt",head = T, sep="");
+mortrate = ts(Mort[,2],start = 1937,freq =12);
+ts.plot(mortrate,gpars = list(xlab = "Month", ylab = "mortrate"),main = "time series")
+z01 = tail(mortrate,-1)
+z02 = tail(mortrate,-2)
+z1 = head(mortrate,-1)
+z2 = head(mortrate,-2)
+plot(z1, z01,xlab = "Z_t+1",ylab = "z_t",main="scatter plots of z_t+1 versus z_t ")
+plot(z2, z02,xlab = "Z_t+2",ylab = "z_t",main="scatter plots of z_t+2 versus z_t")
+```
+\begin{enumerate}
+	\item[(b)] Based on the plots in (a), do you think that the series is autocorrelated? Comment on whether you think the time series is stationary.
+	
+	Since the scatter plot is linear, the series is autocorrelated
+	
+	Since the trend of the time series has a crest beyond 1980, it is not stationary.
+
+	\item[(c)] Plot the sample autocorrelation for this series up to lag 40.  Relate this plot to the plots in (a).
+\end{enumerate}
+
+```{r}
+ acf(mortrate,lag.max = 40)
+```
+ 
+
+## Problem 5
+Consider the daily simple return of CRSP equal-weighted index from January 1980 to December 1999 in the file `DEWRet.csv'. Use a regression model to study the effects of trading days on the index return. What is the fitted model? Are the weekday effects significant in the returns at the 5\% level? Use the Newey-West estimator of the covariance matrix to obtain the t-values of regression estimates. Does it change the conclusion of weekday effect?
+
+1) OLS Model
+2) under 5\%
+3)it is not change the conclusion of weekday effect
+
+```{r}
+crsp = read.csv("DEWRet.csv",skip = 11,header = T)
+ret = ts(crsp[,7],start = 1980,freq = 365)
+T = length(ret);t=1:T
+week0 = 3:5; week1 = rep(1:5,1010);week2 = 1:3
+week = c(week0,week1,week2)
+w = factor(week)
+nreg = lm(ret~t+w)
+qqnorm(residuals(nreg))
+acf(residuals(nreg), lag.max = 20)
+```
+
+## Problem 6
+Consider the daily returns of S\&P composite index from January 3, 2000 to December 31, 2003. The data are in the file `SP.csv'. Perform all tests using the 5\% significance level, and answer the following questions:
+
+\begin{enumerate}
+\item[(a)] Is there a Friday effect on the daily simple returns of S\&P composite index? You may employ a simple linear regression model to answer this question. Estimate the model via Newey-West estimator and test the hypothesis that there is no Friday effect. Draw your conclusion.
+\end{enumerate}
+```{r}
+sp = read.csv("SP.csv",skip = 7, header = T)
+ret = ts(sp[,2],start = 2000, freq = 1004/4)
+T = length(ret); t = 1:T
+week1 = rep(1:5,200);week2 = 1:4
+week = c(week1,week2)
+w = factor(week)
+nreg = lm(ret~t+w)
+par(mfrow = c(1, 3))
+ts.plot(residuals(nreg)); abline(h=0, lty=2)
+acf(residuals(nreg), lag.max = 50)
+qqnorm(residuals(nreg)); qqline(residuals(nreg))
+```
+
+\begin{enumerate}
+\item[(b)] Check the residual serial correlations. Are there any significant serial correlations in the residuals?
+
+Since almost all lag of the series residuals of nref is about the blue line,
+there is a significant serial correlation in the residuals.
+\end{enumerate}
+

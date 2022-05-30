@@ -1,0 +1,113 @@
+---
+title: "homework 2"
+author: "Enbo Tian"
+date: "2020/9/29"
+output: pdf_document
+---
+## Problem 1
+Since a strictly stationary depends only on the time lag k, and a Guassian stationary process has the multivariate normal distributions:
+$f(y) = \frac{1}{2\pi^{n/2}|\Gamma|^{1/2}}e^{-1/2(y-\mu)'\Gamma^{-1}(y-\mu)}$,
+
+it has the same distribution at $ t+k $ . So a 
+Guassian stationary is a strictly stationary.
+
+## Problem 2
+\begin{enumerate}
+\item[(a)] $\mu_t=Y_t-Z_t=\beta_0+\beta_1t $
+\item[(b)] No, since $ Y_t = \beta_0 + \beta_1t+Z_t$, $\beta_1t$ is a factor of $Y_t$, which depend on the time t. So it is not stationary.
+\item[(c)] $W_t=Y_t-Y_{t-1}=[\beta_0+\beta_1t+Z_t]-[\beta_0+\beta_1(t-1)+Z_{t-1}] \\= \beta_1+Z_t-Z_{t-1}$,which is not depend on t, so $W_t$ is stationary.
+\end{enumerate}
+
+## Problem 3
+\begin{enumerate}
+\item[(a)]
+$  Cov(Y_{t+k},Y_t) = E[Y_{t+k}Y_t]-E[Y_t]E[Y_t+k]\\=E[Y_{t+k}Y_t]-\mu^2\\=E[(\mu+\sum_{j=-\infty}^\infty\psi_jZ_{t-j})(\mu+\sum_{j=-\infty}^\infty\psi_{j+k}Z_{t-j-k})]-\mu^2\\=E[\mu^2+\mu(\sum_{j=-\infty}^\infty\psi_jZ_{t-j}+\sum_{j=-\infty}^\infty\psi_{j+k}Z_{t-j-k})+(\sum_{j=-\infty}^\infty\psi_jZ_{t-j})(\sum_{j=-\infty}^\infty\psi_{j+k}Z_{t-j-k})]-\mu^2\\=\mu^2+\mu E[\sum_{j=-\infty}^\infty\psi_jZ_{t-j}]+\mu E[\sum_{j=-\infty}^\infty\psi_{j+k}Z_{t-j-k}]+E[(\sum_{j=-\infty}^\infty\psi_jZ_{t-j})(\sum_{j=-\infty}^\infty\psi_{j+k}Z_{t-j-k})]-\mu^2\\=E[(\sum_{j=-\infty}^\infty\psi_jZ_{t-j})(\sum_{j=-\infty}^\infty\psi_{j+k}Z_{t-j-k})]$
+ 
+since $ E[\sum_{j=-\infty}^\infty\psi_jZ_{t-j}] = 0$ and $E[\sum_{j=-\infty}^\infty\psi_{j+k}Z_{t-j-k}]  =0$.  
+
+Since $ Z_t\sim WN(0,\sigma^2)$,
+
+$Cov(Y_{t+k},Y_t) = \sigma^2 \sum_{j=-\infty}^\infty\psi_j\psi_{j+k}$
+
+\item[(b)]
+$ \gamma(k)=Cov(Y_t,Y_{t+k})= \sigma^2 \sum_{j=-\infty}^\infty\psi_j\psi_{j+k}$
+Since $ \sum_{j=-\infty}^\infty|\psi_j|<\infty$ implys $ \sigma^2 \sum_{j=-\infty}^\infty\psi_j\psi_{j+k} < \infty$ and $ \sum_{k=-\infty}^\infty\sum_{j=-\infty}^\infty\psi_{j+k} < \infty$
+
+So $ \sum_{k=-\infty}^\infty|\gamma(k)|\\=\sigma^2 \sum_{j=-\infty}^\infty\psi_j\psi_{j+k} *\sum_{k=-\infty}^\infty\sum_{j=-\infty}^\infty\psi_{j+k} < \infty*\infty <\infty$
+
+\item[(c)]
+Since $ \sum_{j=-\infty}^\infty\psi_j $has the same variables with $ \sum_{k=-\infty}^\infty\sum_{j=-\infty}^\infty\psi_{j+k}$,
+so$ \sum_{j=-\infty}^\infty\psi_j = \sum_{k=-\infty}^\infty\sum_{j=-\infty}^\infty\psi_{j+k}$,
+
+then$v = \sum_{k=-\infty}^\infty\gamma(k)= \sigma^2 \sum_{j=-\infty}^\infty\psi_j\sum_{j=-\infty}^\infty\psi_j \\=\sigma^2 (\sum_{j=-\infty}^\infty\psi_j)^2$
+\end{enumerate}
+## Problem 4
+\begin{enumerate}
+\item[(a)]
+$E(Y_t) = E(e_1cos(t)+e_2sin(t))= E(e_1)cos(t)+E(e_2)sin(t)]$
+
+\item[(b)]
+Since $e1$, $e2$ have mean $ 0$, then $E(Y_t) = 0$
+
+$Cov(Y_{t+k},Y_t) = E(Y_{t+k}Y_t) - E(Y_{t+k})E(Y_t) \\=E(Y_{t+k}Y_t)\\=E[(e_1cos(t+k)+e_2sin(t+k))(e_1cos(t)+e_2sin(t))] \\=E[e_1^2cos(t+k)cos(t)+e_1e_2(cos(t+k)sin(t)+sin(t+k)cos(t))+e_2^2sin(t+k)sin(t)]$
+
+Since $e_1$,$e_2$ are independent, $E[e_1e_2]=E[e_1]E[e_2] = 0$,and $ E[e_1^2]=E[e_2^2]=\sigma^2$
+
+then $Cov(Y_{t+k},Y_t) =\sigma^2cos(t+k)cos(t)+ \sigma^2sin(t+k)sin(t)\\=\sigma^2(cos(t+k)cos(t)+sin(t+k)sin(t)) \\= \sigma^2cos(t+k-t)\\=\sigma^2cos(k)$
+
+\item[(c)]
+Since $ E[Y_t]=0$ is not depent on $t$, and $Cov(Y_{t+k},Y_t)$ depends only on lag $k$, So $\{Y_t\}$ is stationary.
+\end{enumerate}
+## Problem 5
+\begin{enumerate}
+\item[(a)]
+$ E(Y_t) = \mu = 5.0$
+
+$\gamma(0) = \sigma_{MA}^2 = (1-1.4+0.7)\sigma^2 = 0.3*2.4 = 0.72 $
+
+Since MA(2), when k>2, $\gamma(k) = 0$,
+
+$\rho(k) = \gamma(k)/\gamma(0)=0 $
+\item[(b)]
+\end{enumerate}
+```{r}
+(acf.ma2 = ARMAacf(ma=c(-1.4,0.7), lag.max=7))
+```
+\begin{enumerate}
+\item[(c)]
+\end{enumerate}
+
+```{r}
+ma2 = 5.0+arima.sim(list(order=c(0,0,2), ma=c(-1.4,0.7)), n=100, sd=sqrt(2.4))
+ts.plot(ma2, main="MA(2),mu=10,sd=2"); abline(h=10)
+acf(ma2)
+plot(0:7, acf.ma2, type="h",xlab="lag",main="MA(2) theta1=1.4 theta2=-0.7")
+abline(h=0)
+```
+
+## Problem 6
+\begin{enumerate}
+\item[(a)]
+Since $lim_{k->\infty}\rho(k) = 0$,
+
+then exist a $ k=n$, where $ \gamma(n) = 0$,
+
+then from $t=n$ to $T=\infty$, $\bar{Y_n}=(1/(T-n))\sum_{t=n}^TY_t = \mu$
+then plug $t=1$ to $t=n-1$ into $\bar{Y_n}$ with $T-n$ times,
+
+we can get $\bar{Y} = (1/T)\sum_{t=1}^TY_t \approx\mu$
+
+\item[(b)]
+Since $\bar{Y} = (1/T)\sum_{t=1}^TY_t$ 
+
+then $ Var(\bar{Y}) = (1/T)^2\sum_{s=1}^T\sum_{t=1}^TY_{t-s}$, where s is add as row sums.
+
+Then $Var(\bar{Y}) =  (1/T)\sum_{k=-(T-1)}^{T-1}(1-\frac{|k|}{T})\gamma(k)$, where $k = t-s$.
+
+Then $TVar(\bar{Y}) = \sum_{k=-(T-1)}^{T-1}(1-\frac{|k|}{T})\gamma(k)$, 
+
+when $T$->$\infty$, $\frac{|k|}{T} $->$ 0$, and then $(1-\frac{|k|}{T})$->$1$
+
+then $TVar(\bar{Y})$->$\sum_{k=-\infty}^{\infty}\gamma(k)$
+
+\end{enumerate}

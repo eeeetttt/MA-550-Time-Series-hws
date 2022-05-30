@@ -1,0 +1,167 @@
+---
+title: "homework 6"
+author: "Enbo Tian"
+date: "2020/12/3"
+output: pdf_document
+---
+
+## Problem 1
+\begin{enumerate}
+\item[(a)]
+\end{enumerate}
+```{r}
+library(lubridate)
+Rday<-read.csv("DailyLogRet-intc9608.txt",sep = "",skip = 2)
+day <- ymd(Rday$date)
+a = 1
+
+Rmon <- rep(0,156)
+count <- rep(0,156)
+for(i in 1996:2008 ){
+ for(j in 1:12){
+   data = 0
+   n =0
+    for(k in 1:3274){
+      if(year(day[k])==i & month(day[k])==j){
+        data = data+Rday$rtn[k]
+        n = n+1
+      }
+      Rmon[a] = data
+      count[a] = n
+    }
+    a = a+1
+  }
+}
+Rmon
+```
+\begin{enumerate}
+\item[(b)]
+\end{enumerate}
+```{r}
+#find the ACF value at lag 1
+acf(Rday$rtn,lag.max =1, plot = F)
+
+r1 =-0.044
+vart <- rep(0,156)
+a = 1
+for(i in 1: 156){
+  sum = 0
+  for( j in 1: count[i]){
+    sum = sum+(Rday$rtn[a]-Rmon[i]/count[i])^2
+    a =a +1
+  }
+  
+  vart[i] <- (1+ 2*r1)/(count[i]-1)*sum
+}
+ vart
+```
+
+\begin{enumerate}
+\item[(c)]
+\end{enumerate}
+```{r}
+summary(Rday$rtn) # day summary
+summary(Rmon) # month summary
+```
+
+\begin{enumerate}
+\item[(d)]
+\end{enumerate}
+```{r}
+lnvart <- log(vart)
+summary(vart)
+summary(lnvart)
+## N = 156 for var and ln var
+```
+\begin{enumerate}
+\item[(e)]
+\end{enumerate}
+```{r}
+library(TSA)
+eacf(lnvart, ar.max = 10, ma.max = 10)
+est <- arima(lnvart, order=c(13,0,1), include.mean = T)
+est
+```
+
+```{r}
+T = length(lnvart)
+(pmax = floor(12 * (T/100)^(1/4)))
+
+estt = (0.9553-1)/0.028
+
+estlnvart <- rep(0,142)
+for (t in 15: 156){
+  sum = 0
+  for(i in 1:pmax){
+    sum=sum+0.9553*(lnvart[t-i]-lnvart[t-i-1])
+  }
+ estlnvart[t-14] = -0.7596+(0.9553-1)*lnvart[t-1]+sum+est$residuals[t]
+}
+estlnvart
+```
+
+## Problem 2
+\begin{enumerate}
+\item[(a)]
+\end{enumerate}
+```{r}
+unem<-read.csv("m-unrate.txt",sep = "")
+unts <- ts(unem$Rate, start=c(1948,1), freq = 12)
+plot(unts, ylab='rate') #ts plot
+summary(unts) #summary
+acf(unts) # acf plot
+pacf(unts)# pacf plot
+eacf(unts, ar.max = 10, ma.max = 10)
+```
+\begin{enumerate}
+\item[(b)]
+\end{enumerate}
+```{r}
+est1 <-arima(unts, order=c(2,0,2), include.mean = T)
+est2 <-arima(unts, order=c(3,0,2), include.mean = T)#ARMA(3,2) perfered
+est3 <-arima(unts, order=c(2,0,3), include.mean = T)
+est1
+est2
+est3
+Box.test(est1$residuals, lag = 13, type = "Ljung-Box", fitdf=2+2)
+Box.test(est2$residuals, lag = 13, type = "Ljung-Box", fitdf=2+3)
+Box.test(est3$residuals, lag = 13, type = "Ljung-Box", fitdf=3+2)
+```
+\begin{enumerate}
+\item[(c)]
+\end{enumerate}
+```{r}
+pred.dat <- predict(est2, n.ahead=4)
+pred.dat
+```
+
+\begin{enumerate}
+\item[(d)]
+yes, since he AR polynomial relate to the behavior of stochastic cycles.
+
+\item[(e)]
+\end{enumerate}
+```{r}
+library(FinTS)
+dif12 = diff(unts, lag=12)
+dif = diff(unts); ddif12 = diff(dif, lag=12)
+fit <- ARIMA(dif, order=c(3,0,2),seasonal=list(order=c(0,0,2), period=6), Box.test.lag=15)
+fit$Box.test
+
+## the corresponding period is 6
+```
+
+## Problem 3
+```{r}
+ele<-read.csv("power6.txt")
+elets <- ts(ele$power)
+plot(elets, ylab='logpower') 
+summary(elets)
+eacf(elets, ar.max = 10, ma.max = 10)
+est <-arima(unts, order=c(2,0,2), include.mean = T)
+est
+Box.test(est$residuals, lag = 13, type = "Ljung-Box", fitdf=2+2)
+fit <- ARIMA(dif, order=c(2,0,2),seasonal=list(order=c(0,1,1), period=11), Box.test.lag=14)
+fit$Box.test
+
+```
